@@ -1,0 +1,38 @@
+---
+
+import {supabase} from '../js/supabase_client'; 
+
+const user = Astro.url.searchParams
+var email = user.get('email') ?? 'n/a'
+const pw = user.get('pw') ?? 'n/a'
+
+async function checkLogin(){
+    if(email != 'n/a'){//TEMP
+        console.log(email)
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: pw,
+        })
+        if(error == null){
+            console.log('data')
+            email = ''//TEMP
+            return Astro.redirect('/u_startpage');
+        }else{
+            alert('No such user!')
+            email = ''//TEMP
+            return Astro.redirect('http://localhost:3000/login');
+        }
+    }
+}
+checkLogin();
+// if(email == 'mac'){
+//     return Astro.redirect('http://localhost:3000');
+// }
+---
+
+
+<form action = "http://localhost:3000/login" method = "GET">
+    Email: <input type = "text" name = "email">  <br>
+    Pw: <input type = "text" name = "pw">
+    <input type = "submit" value = "Submit">
+ </form>

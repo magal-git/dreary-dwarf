@@ -1,0 +1,83 @@
+---
+import {supabase} from '../js/supabase_client';
+
+interface Props{
+    id: string;
+}
+const {id} = Astro.props;
+
+const param = Astro.url.searchParams
+var page = param.get('page') ?? ''
+var nPage = parseInt(page);
+
+var {trxs} = Astro.props;
+var from = 0
+var to = 0
+const txTs = 4;
+var qtyPages = 0;
+
+if(isNaN(nPage)){
+    nPage = 0;
+}
+//from
+var tmpfrom = txTs * nPage//4
+var addNr = tmpfrom/txTs//1
+from = tmpfrom + addNr//5
+
+//to
+to = from + txTs
+
+function trxYear(){
+    const d = new Date();
+    //let tyear = d.getFullYear();
+    return d.getFullYear();
+}
+
+async function getTodayTrx (){
+    var totx = await getCount() ?? -1
+    
+    //
+    qtyPages = Math.ceil(totx/txTs);
+    //console.log(Math.ceil(qtyPages))
+    //
+    const year = trxYear();
+    const stTbl = 'transactions' + year;
+    const {data} = await supabase.from(stTbl).select()
+    .eq('shop_id', id)
+    .range(from, to)
+	
+    return data;
+}
+
+async function getCount(){
+    const year = trxYear();
+    const stTbl = 'transactions' + year;
+    const { data, count } = await supabase
+    .from(stTbl)
+    .select('*', { count: 'exact' })
+    .eq('shop_id', id)
+    
+    return count;
+}
+
+trxs = await getTodayTrx();
+// console.log('trxs[0]')
+// console.log(trxs[0])
+
+---
+
+
+<h1>{id}</h1>
+
+
+<!-- <div>{trxs.map( (n: any) => <ul>{n.id}</ul>)}</div>
+<script define:vars={{ qtyPages }}>
+    for(let i=1; i<qtyPages; i++){
+        document.write('<a href=http://localhost:3000/u_startpage?page='+parseInt(i-1)+'>' + i + '</a>')
+    }
+    
+</script> -->
+
+<!-- <ul>{
+	names.map((n) => <li>{n}</li>)
+}</ul> -->

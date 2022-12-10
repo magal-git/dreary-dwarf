@@ -1,0 +1,63 @@
+---
+import ShowTodayTrx from '../components/ShowTodayTrx.astro';
+import {supabase} from '../js/supabase_client';
+import { getTotSaldo, getUserBizId } from '../js/functions';
+
+
+// const token = Astro.cookies.get('token')
+// var visible = false;
+// var uemail;
+// var uid;
+
+
+// if(token.value != null){// token.has
+//     const { data, error } = await supabase.auth.getUser(token.value)//** ONLY FOR BUSINESS USER
+//     uemail = data['user']?.email;
+// }
+// if(uemail != null){
+//     const {data, error} = await supabase.from('shops').select('id')
+//     .eq('owner', uemail)
+
+//     if(error == null){
+//         uid = data![0]['id']//** SHOP_ID
+//         console.log(uid)
+//         visible = true
+//     }//else
+// }
+const token = Astro.cookies.get('token')
+var uid = await getUserBizId(token);
+
+var totam;
+var saldo = 0;
+var tdate;
+
+if(uid > 0){
+    saldo = 0;
+    totam = await getTotSaldo(uid);
+    totam?.map( (nr) => saldo += parseInt(nr.amount) )
+
+    // if(visible){
+    //     //return Astro.redirect('http://localhost:3000/mytable');
+    // }else{
+    //     alert('not logged in')
+    // }
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = d.getMonth();
+    var day = d.getDate();
+    tdate = y + '-' + m + '-' + day;
+}
+    
+---
+
+
+<h2>{tdate}</h2>
+<h1>{saldo} sek</h1>
+
+<!-- {visible && -->
+    <!-- <ShowTodayTrx id={uid} /> -->
+
+<!-- <Supabase token={token.value!}></Supabase> -->
+
+
+<!-- <Supabase></Supabase> -->
