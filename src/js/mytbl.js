@@ -1,5 +1,6 @@
 import { supabase } from './supabase_client.js';
 
+var token = getCookie('token')
 
 function trxYear(){
     const d = new Date();
@@ -7,32 +8,25 @@ function trxYear(){
     return d.getFullYear();
 }
 
-async function getTodayTrx (){
-    //var totx = await getCount() ?? -1
-    
-    //
-    //qtyPages = Math.ceil(totx/txTs);
-    //console.log(Math.ceil(qtyPages))
-    //
-    const year = trxYear();
-    const stTbl = 'transactions' + year;
-    const { data } = await supabase.from(stTbl).select()
-    .eq('shop_id', 21)
-    //.range(from, to)
+async function getTodayTrx (uid){
+  const year = trxYear();
+  const stTbl = 'transactions' + year;
+  const { data } = await supabase.from(stTbl).select()
+  .eq('shop_id', uid)
 	
-    return data;
+  return data;
 }
 
-async function getCount(){
-    const year = trxYear();
-    const stTbl = 'transactions' + year;
-    const { data, count } = await supabase
-    .from(stTbl)
-    .select('*', { count: 'exact' })
-    .eq('shop_id', 21)
+// async function getCount(){
+//     const year = trxYear();
+//     const stTbl = 'transactions' + year;
+//     const { data, count } = await supabase
+//     .from(stTbl)
+//     .select('*', { count: 'exact' })
+//     .eq('shop_id', 21)
     
-    return count;
-}
+//     return count;
+// }
 
 //*******************
 //* CHECK VALID USER
@@ -56,7 +50,6 @@ function getCookie(cname) {
     }
     return "";
   }
-  var token = getCookie('token')
   
   if(token != null){// token.has
     const { data, error } = await supabase.auth.getUser(token)
@@ -81,7 +74,7 @@ if(uemail != null){
 
 if(visible){
     var trxs = [];
-    trxs = await getTodayTrx();
+    trxs = await getTodayTrx(uid);
 
     //alert(trxs.length)
     var mydata = [
@@ -91,7 +84,7 @@ if(visible){
 
     $(document).ready(function(){
         $("button").click(function(){
-            $("#tid").hide();
+            $(location).attr('href', 'http://localhost:3000/u_startpage'); 
         });
 
         $('#tid').DataTable({

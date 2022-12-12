@@ -40,4 +40,13 @@ async function getUserBizId(token){
     }
 }
 
+// async function signOut(){
+//     alert('signout')
+//     const data = await supabase.auth.getSession();
+//     await supabase.auth.api.signOut(session.access_token);
+//     //const { error } = await supabase.auth.signOut()
+//     // console.log(data.session)
+// }
+//const signOut = async () => await supabase.auth.getSession();
+
 export { getTotSaldo, getUserBizId }

@@ -6,6 +6,11 @@ import { createClient } from '@supabase/supabase-js'
 //*CPAY DB
 export const supabase = createClient('https://pdqbveeydttlvoumfxpm.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkcWJ2ZWV5ZHR0bHZvdW1meHBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTIzNTIxODIsImV4cCI6MTk2NzkyODE4Mn0.MU008y7Ag-WvQUiu4EONTb-P0IK2Tw7YvUPaIIRcQSI');
 
+//*CPAY role key
+// export const supabase = createClient('https://pdqbveeydttlvoumfxpm.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkcWJ2ZWV5ZHR0bHZvdW1meHBtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY1MjM1MjE4MiwiZXhwIjoxOTY3OTI4MTgyfQ.o6lVu32FwkmkhM7EWeZYOuCqsYybYlLTJBWHMTVhH00');
+
+
+
 
 //export default supabase;
 
