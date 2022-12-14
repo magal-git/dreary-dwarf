@@ -4,6 +4,7 @@ dist/
 
 # dependencies
 node_modules/
+evo-calendar/
 
 # logs
 npm-debug.log*

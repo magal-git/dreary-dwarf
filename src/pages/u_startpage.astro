@@ -1,11 +1,11 @@
 ---
-import ShowTodayTrx from '../components/ShowTodayTrx.astro';
-import {supabase} from '../js/supabase_client';
+//import ShowTodayTrx from '../components/ShowTodayTrx.astro';
+//import {supabase} from '../js/supabase_client';
 import { getTotSaldo, getUserBizId } from '../js/functions';
 
 const token = Astro.cookies.get('token')
 //alert(token)
-var uid = await getUserBizId(token);
+var uid = await getUserBizId(token.value);
 
 var totam;
 var saldo = 0;
@@ -18,8 +18,10 @@ if(uid > 0){
     totam = await getTotSaldo(uid);
     totam?.map( (nr) => saldo += parseInt(nr.amount) )
 
-    prov = saldo *0.004;//*MAKE GLOBAL
+    prov = saldo * 0.004;//*MAKE GLOBAL
     avail = saldo-prov;
+    avail = parseFloat(avail.toFixed(2));
+    prov = parseFloat(prov.toFixed(2));
     // if(visible){
     //     //return Astro.redirect('http://localhost:3000/mytable');
     // }else{
@@ -36,36 +38,36 @@ if(uid > 0){
 
 ---
 
-
-<div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto">
-    <div class="w-full h-64 bg-gray-300 bg-center bg-cover rounded-lg shadow-md"
-        style="background-image: url(/trx.jpg)">
-    </div>
-
-    <div class="w-56 -mt-10 overflow-hidden bg-white rounded-lg shadow-lg md:w-64 dark:bg-gray-800">
-        <h3 class="py-2 font-bold tracking-wide text-center text-gray-800 uppercase dark:text-white">{tdate}</h3>
-
-        <div class="flex items-center justify-between px-3 py-2 bg-gray-200 dark:bg-gray-700">
-            <span class="font-bold text-gray-800 dark:text-gray-200">Sale: {saldo} sek</span>
+<!-- //CARD -->
+<div class="bg-gray-50 h-[24rem] w-full">
+    <div class="flex bg-white mx-auto rounded-lg flex-col max-w-xl overflow-hidden">
+      <div class="bg-gray-100 p-6 flex items-center">
+        <div class=""> </div>
+        <div class="flex flex-col">
+          <div class="font-bold text-2xl">{tdate}</div>
         </div>
-        <div class="flex items-center justify-between px-3 py-2 bg-gray-200 dark:bg-gray-700">
-            <span class="font-bold text-gray-800 dark:text-gray-200">Prov: {prov} sek</span>
+      </div>
+      <div class="flex">
+        <div class="p-6 flex flex-col">
+          <h5 class="text-xl font-bold mb-2">Sale: {saldo} sek</h5>
+          <p>Provision: {prov} sek</p>
+          <p class="text-blue-700 font-bold mt-5">Available: {avail} sek</p>
+          <h5 class="font-bold text-sm mt-auto text-gray-400"></h5>
         </div>
-        <div class="flex items-center justify-between px-3 py-2 bg-gray-200 dark:bg-gray-700">
-            <span class="font-bold text-gray-800 dark:text-gray-200">Avail: {avail} sek</span>
-        </div>
-        <div class="flex items-center justify-between px-3 py-2 bg-gray-200 dark:bg-gray-700">
+        <div class="bg-cover h-64 shrink-0 flex-auto w-6/12 bg-[url('/trx.jpg')]"> </div>
+      </div>
+      <div class="flex items-center justify-between px-3 py-2 bg-gray-200 dark:bg-gray-700">
         <button id="trx" class="px-2 py-1 text-xs font-semibold text-white uppercase transition-colors duration-300 transform bg-gray-800 rounded hover:bg-gray-700 dark:hover:bg-gray-600 focus:bg-gray-700 dark:focus:bg-gray-600 focus:outline-none">Go to transactions</button>
         </div>
     </div>
-</div>
+  </div>
+<!-- //CARD -->
 
-<!-- <button id="lo">Sign out</button> -->
-<div id="lo" class="flex justify-center">
+<!-- <div id="lo" class="flex justify-center">
     <button class="px-8 py-2 tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-80">
         Sign Out
     </button>
-</div>
+</div> -->
 
 <script>
 

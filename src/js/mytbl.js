@@ -49,7 +49,7 @@ function getCookie(cname) {
       }
     }
     return "";
-  }
+}
   
   if(token != null){// token.has
     const { data, error } = await supabase.auth.getUser(token)
@@ -83,9 +83,9 @@ if(visible){
     trxs.map((n) => mydata.push(new Array(n.id, n.created_at, n.sender_id, n.amount, n.currency, n.coin_type, n.coin_amount)))
 
     $(document).ready(function(){
-        $("button").click(function(){
-            $(location).attr('href', 'http://localhost:3000/u_startpage'); 
-        });
+        // $("button").click(function(){
+        //     $(location).attr('href', 'http://localhost:3000/u_startpage'); 
+        // });
 
         $('#tid').DataTable({
             data:mydata,
@@ -104,3 +104,14 @@ if(visible){
         });
     });
 }
+
+const btn = document.createElement('button')
+btn.innerHTML = "Back"
+btn.id = "back"
+document.body.appendChild(btn)
+
+
+const back = document.querySelector('#back') ?? document.createElement('button');
+    back.addEventListener('click', () => {
+        window.location.href = "http://localhost:3000/u_startpage";
+    });

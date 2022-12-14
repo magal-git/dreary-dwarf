@@ -15,7 +15,6 @@ async function checkLogin(){
             password: pw,
         })
         if(error == null){
-            //console.log(data['session']['refresh_token'])
            
             return data;
         }else{
@@ -27,24 +26,15 @@ async function checkLogin(){
 
 const ud = await checkLogin();
 if(ud != null){
-    // const { data, error } = await supabase.auth.setSession({
-    //     refresh_token:ud['session']['refresh_token'], 
-    //     access_token:ud['session']['access_token']});
-        
-    // console.log('this is refresh//////////////');
-    // console.log(data);
 
     Astro.cookies.set('token', ud['session']['access_token']);
     //Astro.cookies.set('uemail', ud['user']['email']);
 }
 
 if(ud != null){
-    //console.log(ud['session'])
     rfl = false;
     return Astro.redirect('http://localhost:3000/u_startpage');
-    //return Astro.redirect('http://localhost:3000/u_startpage?tk='+ ud['session']['access_token']);
 }else{
-    //return Astro.redirect('http://localhost:3000/login');
     rfl = true;
 }
 ---
@@ -54,12 +44,6 @@ if(rfl){
     window.history.replaceState({}, document.title, "/login");
 }
 </script>
-
-<!-- <form action = "http://localhost:3000/login" method = "GET">
-    Email: <input type = "text" name = "email">  <br>
-    Pw: <input type = "text" name = "pw">
-    <input type = "submit" value = "Submit">
- </form> -->
 
  <section class="bg-white dark:bg-gray-900">
     <div class="container flex items-center justify-center min-h-screen px-6 mx-auto">
