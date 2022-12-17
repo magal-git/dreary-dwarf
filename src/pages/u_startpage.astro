@@ -1,6 +1,8 @@
 ---
 //import ShowTodayTrx from '../components/ShowTodayTrx.astro';
 //import {supabase} from '../js/supabase_client';
+
+import TxTbl from '../components/TxTbl.astro';
 import { getTotSaldo, getUserBizId } from '../js/functions';
 
 const token = Astro.cookies.get('token')
@@ -15,7 +17,7 @@ var avail = 0;
 
 if(uid > 0){
     saldo = 0;
-    totam = await getTotSaldo(uid);
+    totam = await getTotSaldo(uid);//TEST FUNC
     totam?.map( (nr) => saldo += parseInt(nr.amount) )
 
     prov = saldo * 0.004;//*MAKE GLOBAL
@@ -37,6 +39,8 @@ if(uid > 0){
 }
 
 ---
+
+<script defer src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js"></script>
 
 <!-- //CARD -->
 <div class="bg-gray-50 h-[24rem] w-full">
@@ -83,3 +87,5 @@ if(uid > 0){
     });
     
 </script>
+
+<TxTbl />

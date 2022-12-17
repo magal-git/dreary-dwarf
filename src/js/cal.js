@@ -3,7 +3,6 @@ import { getTotSaldoForDate, getUserBizId, glgetCookie } from './functions'
 
 var token = glgetCookie('token')
 var shopId = await getUserBizId(token)
-//alert(shopId)
 // Check if user is looged in
 
 
@@ -12,54 +11,61 @@ var shopId = await getUserBizId(token)
 // var year = pdate.getMonth
 // var year = pdate.getDate(day)
 
-var date = new Date('2022', '10', '03', 0, 0, 0)//month-1 , 10=11
+
+
+var date = new Date('2022', '10', '03', 0, 0, 0)//TEST DATE
+
 //alert(date)
+const today = new Date();
+//alert(today)
 
-//getTotSaldoForDate(shopId, date)
+showSaldo(today)
 
-var mye = 'sale 29095';
-        const myEvents = [
-        { 
-            id: "required-id-1",
-            name: mye, 
-            date: "Wed Dec 14 2022 00:00:00 GMT-0800 (Pacific Standard Time)", 
-            type: "What", 
-            everyYear: true 
-        },
-        { 
-            id: "required-id-2",
-            name: '<a href="/mytable">go</a>', 
-            date: "Wed Dec 14 2022 00:00:00 GMT-0800 (Pacific Standard Time)", 
-            type: "What", 
-            everyYear: true 
-        },
-        ]
+async function showSaldo(date){// When a new date is selected
+    var totam;
+    var saldo = 0;
+    var tdate;
+    var prov = 0;
+    var avail = 0;
 
-        // $('#evoCalendar').evoCalendar({
-        //     todayHighlight: false,
-        //     calendarEvents: myEvents,
-            
-        //     onSelectDate: function() {
-        //     //console.log('onSelectDate!')
-        //     alert('uwryieuw')
-        //     //$('#title').text('test');
-        //     }
+    totam = await getTotSaldoForDate(shopId, date)
+    totam?.map( (nr) => saldo += parseInt(nr.amount) )
 
-        // });
+    prov = saldo * 0.004;//*MAKE GLOBAL
+    avail = saldo-prov;
+    avail = parseFloat(avail.toFixed(2));
+    prov = parseFloat(prov.toFixed(2));
+   
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = d.getMonth();
+    var day = d.getDate();
+    tdate = y + '-' + m + '-' + day;
 
-        
-        var date = new Date('2022', '10', '03', 0, 0, 0)
-        alert(date)
-        $('#evoCalendar').evoCalendar({
-            calendarEvents: myEvents,
-            sidebarDisplayDefault: false,
-            eventDisplayDefault: false,
-            eventListToggler: false,
-        }).on('selectDate', function(event, newDate, oldDate) {
-            //$('#date').text(newDate);
-            $('a').attr('href', '/mytable?121005')
-           
-            getTotSaldoForDate('39', date).then( (res) =>{
-                $('#date').text(res[0]['id'])
-            })
-        });
+    $('#sale').text('Sale: ' + saldo)
+    $('#prov').text('Prov: ' + prov)
+    $('#avail').text('Avail: ' + avail)
+}
+
+
+$('#evoCalendar').evoCalendar({
+    //calendarEvents: myEvents,
+    sidebarDisplayDefault: false,
+    eventDisplayDefault: false,
+    eventListToggler: false,
+}).on('selectDate', function(event, newDate, oldDate) {
+    $('#date').text(newDate);
+    $('a').attr('href', '/mytable?121005')
+    const onewDate = makeObjDate(newDate)
+    showSaldo(onewDate);
+});
+
+function makeObjDate(stdate){
+    var split = stdate.split('/')
+    var y = split[2]
+    var m = split[0]
+    var d = split[1]
+    const dt = y + '-' + m + '-' + d
+    var od = new Date(y, m-1, d)
+    return od;
+}

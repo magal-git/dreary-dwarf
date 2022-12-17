@@ -6,7 +6,7 @@ function trxYear(){
     return d.getFullYear();
 }
 
-async function getTotSaldo(shopid){
+async function getTotSaldo(shopid){//TEST FUNC
    
    const year = trxYear();
    const stTbl = 'transactions' + year;
