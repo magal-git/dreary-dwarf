@@ -12,16 +12,89 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
 
-		<script type="module" charset="utf8" src="/src/js/mytbl.js"></script>
+		<!-- <script type="module" charset="utf8" src="/src/js/mytbl.js"></script> -->
+		<script type="module" charset="utf8" src="/src/pages/trxapi.js"></script>
 
 		
 		<title>Title</title>
 	</head>
 	<body>
 
-		<table id="tid" class="display"></table>
-		<button x-data @click="alert('ve been clicked!')">Alpine</button>
+		<label for="start">Start date:</label>
 
+		<!-- <input type="date" id="dp" name="trip-start" value="2018-07-22" min="2018-01-01" max="2018-12-31"> -->
+
+		<form action="/mytable" method="get">
+			<label for="dp">Pick</label>
+			<input type="date" id="dp" name="pick">
+			<input type="submit">
+		  </form>
+		
+
+		
+		<table id="tid" class="display"></table>
+
+		<!-- MYTABLE API TEST -->
+		<script>
+			function test(){
+				alert('qewrete')
+			}
+			//**
+			const queryString = window.location.search;
+			console.log(queryString);
+			const urlParams = new URLSearchParams(queryString);
+			const pickdate = urlParams.get('pick')
+			console.log('you picked ' + pickdate);
+
+
+			//**
+
+			var trxs = [];
+			var date = new Date('2022', '11', '03', 0, 0, 0)//TEST DATE
+			//alert(pickdate)
+			fetch("/trxapi", {
+			method: "POST",
+			body: JSON.stringify({ shopid: '39', date: pickdate })
+			})
+			.then((response) => response.json())
+        	.then((gResponse) => {
+
+	var mydata = [];
+	trxs = gResponse.data;
+    trxs.map((n) => mydata.push(new Array(n.id, n.created_at, n.sender_id, n.amount, n.currency, n.coin_type, n.coin_amount)))
+
+    $(document).ready(function(){
+        // $("button").click(function(){
+        //     $(location).attr('href', 'http://localhost:3000/u_startpage'); 
+        // });
+
+        $('#tid').DataTable({
+            data:mydata,
+            columns: [
+                {title: 'Id'},
+                {title: 'Date'},
+                //{title: 'Hash'},
+                //{title: 'Receiver'},
+                {title: 'Sender'},
+                {title: 'Amount'},
+                {title: 'Currency'},
+                {title: 'Type'},
+                {title: 'Type Amount'},
+                // {title: 'shop Id'},
+            ],
+        });
+    });
+
+			});
+			
+			
+
+	</script>
+
+		<!-- END MYTABLE API TEST -->
+
+		
+		<!-- <button x-data @click="alert('ve been clicked!')">Alpine</button> -->
         <!-- <button>Back</button> -->
 	</body>
 </html>

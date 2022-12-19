@@ -1,0 +1,82 @@
+---
+import Card from "../components/Card.astro";
+
+const page = Astro.url.searchParams
+var pagenr = page.get('page') ?? 0
+
+---
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+	
+  </head>
+
+  <body>
+    
+    <script is:inline define:vars={{ pagenr }}>
+    var qtyPages = 0;
+    var start = 0;
+    var end = 0;
+    var totPosts = 0;
+    var ros = 5;
+
+    var date = new Date('2022', '11', '03', 0, 0, 0)//TEST DATE
+
+        fetch("/trxapi", {
+          method: "POST",
+          body: JSON.stringify({ shopid: '39', date: date })
+        })
+        .then((response) => response.json())
+        .then((gResponse) => {
+          if (gResponse != null) {
+            
+            //console.log(gResponse.data)
+            //gResponse.data.map( (post) => document.write('<div>'+post.id +'-'+ post.created_at+'</div>') )
+
+            start = pagenr * 5
+            end = start + 5
+            totPosts = gResponse.data.length
+
+            //*
+            var fillup = 0;
+
+            if(end > totPosts){
+              end = totPosts
+              console.log(start)
+              console.log(end)
+              fillup = end-start;
+            }
+
+            //console.log('end ' + gResponse.data.length)
+            while(gResponse.data != null && start < end){
+                document.write('<div>' + gResponse.data[start].id + '</div>')
+                start++
+            }
+            if(fillup > 0){
+              while(fillup < 5){
+                document.write('<div>---</div>')
+                fillup++
+              }
+            }
+            //document.close();
+          } else {}
+          //END FETCH
+
+            qtyPages = Math.ceil(totPosts/ros);
+            
+            
+            //PAGINATION
+            for(let i=1; i<=qtyPages; i++){
+              document.write('<a href=http://localhost:3000/mypc?page='+parseInt(i-1)+'>' + i + '</a>')
+            }
+            //PAGINATION
+            
+            document.close();
+
+        })
+        
+    </script>
+    
+  </body>
+</html>

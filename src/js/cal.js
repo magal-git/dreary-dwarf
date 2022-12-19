@@ -13,7 +13,7 @@ var shopId = await getUserBizId(token)
 
 
 
-var date = new Date('2022', '10', '03', 0, 0, 0)//TEST DATE
+//var date = new Date('2022', '10', '03', 0, 0, 0)//TEST DATE
 
 //alert(date)
 const today = new Date();

@@ -2,7 +2,6 @@
 //import ShowTodayTrx from '../components/ShowTodayTrx.astro';
 //import {supabase} from '../js/supabase_client';
 
-import TxTbl from '../components/TxTbl.astro';
 import { getTotSaldo, getUserBizId } from '../js/functions';
 
 const token = Astro.cookies.get('token')
@@ -73,6 +72,7 @@ if(uid > 0){
     </button>
 </div> -->
 
+<button data-callback="onSubmit" data-action="submit">call me</button>
 <script>
 
     const button = document.querySelector('#trx') ?? document.createElement('button');
@@ -88,4 +88,8 @@ if(uid > 0){
     
 </script>
 
-<TxTbl />
+
+
+
+
+<!-- <iframe src="/mypc"></iframe> -->

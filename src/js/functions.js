@@ -42,7 +42,7 @@ async function getTotSaldoForDate(shopid, date){
    
    //alert(data[0].id)
    //alert(data)
-   console.log(data)
+   //console.log(data)
    return data;
 }
 
@@ -65,7 +65,7 @@ async function getUserBizId(token){
             
         }//else
     }else{
-        window.location.href = "http://localhost:3000/login";
+        //window.location.href = "http://localhost:3000/login";
     }
 }
 

@@ -26,8 +26,8 @@ async function checkLogin(){
 
 const ud = await checkLogin();
 if(ud != null){
-
-    Astro.cookies.set('token', ud['session']['access_token']);
+    const cval =  ud['session']!['access_token'] ?? '';//TEST
+    Astro.cookies.set('token', cval)
     //Astro.cookies.set('uemail', ud['user']['email']);
 }
 
