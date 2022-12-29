@@ -1,0 +1,68 @@
+<div>
+    <canvas id="myChart"></canvas>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    var am_ar = [];
+    var labelDates = ["Jan", "Feb", "Mars", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
+
+    fetch("/gettrxmonthapi", { method: "POST", body: JSON.stringify({ shopid: '39' })})
+        .then((response) => response.json())
+        .then((gResponse) => {
+          if (gResponse != null) {
+            //console.log(gResponse.data)       
+
+    gResponse.data.map( (obj) => am_ar.push(obj.saldo) )
+    const ctx = document.getElementById('myChart');
+
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labelDates,
+        datasets: [{
+          label: 'Sale',
+          data: am_ar,
+          borderWidth: 1
+        }]
+      },
+      //*WORKS
+      plugins:[{
+        id: 'click-anywhere',
+        afterEvent(chart, args) {
+          if (args.event.type === 'click') {
+            let {x, y} = chart.scales; 
+            let value = y.getValueForPixel(args.event.y);
+            let xVal = x.getLabelForValue(x.getValueForPixel(args.event.x))
+            //console.log('value: ' + value + ', rounded: ' + Math.round(value) + ', x label: ' + xVal);
+            alert(xVal)
+          }
+        }
+      }],
+      //*
+      options: {
+        events: ['click'],
+        responsive: true,
+        onClick: (e) => {
+          
+        },
+        scales: {
+          y: {
+            ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, ticks) {
+                        return value + ' kr';
+                    }
+                },
+            beginAtZero: true,
+            //suggestedMin: 10,
+            //suggestedMax: 100
+          },
+        }
+      }
+    });
+
+}});
+  </script>

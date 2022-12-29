@@ -1,1 +1,8 @@
-global shop_id in api
+global (shop_id) in api
+make responsive heigth 400px in dashcart m.m.
+
+
+//**
+{glList.map( (obj) => <li>{obj}</li> )} 
+
+<!-- <div class="flex items-center justify-center h-full px-4 py-24 text-gray-400 text-3xl font-semibold bg-gray-100 border-2 border-gray-200 border-dashed rounded-md"> -->
