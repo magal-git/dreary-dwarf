@@ -182,8 +182,8 @@ async function getPriceData(){
     //let data = await CoinGeckoClient.exchanges.list();
     
     let data = await CoinGeckoClient.simple.price({
-        ids: ['bitcoin', 'ethereum'],
-        vs_currencies: ['sek', 'usd'],
+        ids: ['bitcoin', 'ethereum', 'celo', 'algorand', 'stellar', 'solana', 'fantom', 'matic-network', 'ripple', 'tron'],
+        vs_currencies: ['sek'],
     });
     console.log(data.data)
     //console.log(_coinList);

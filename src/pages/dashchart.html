@@ -5,8 +5,21 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <script>
-    var am_ar = [];
     var labelDates = ["Jan", "Feb", "Mars", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
+    //**
+    function convertToDig(strMonth){
+      var ix = labelDates.findIndex(func, strMonth)
+      //alert(ix+1)
+      return ix + 1
+    }
+
+    function func(obj){
+      return obj == this;
+    }
+    //**
+
+    var am_ar = [];
+    
 
     fetch("/gettrxmonthapi", { method: "POST", body: JSON.stringify({ shopid: '39' })})
         .then((response) => response.json())
@@ -37,13 +50,19 @@
             let value = y.getValueForPixel(args.event.y);
             let xVal = x.getLabelForValue(x.getValueForPixel(args.event.x))
             //console.log('value: ' + value + ', rounded: ' + Math.round(value) + ', x label: ' + xVal);
-            alert(xVal)
+            
+            if(xVal == null || xVal == -1){
+              return;
+            }
+            const m = convertToDig(xVal)
+            location.href = '/sim?month=' + m;
+            //alert(xVal)
           }
         }
       }],
       //*
       options: {
-        events: ['click'],
+        events: ['click', 'mousemove'],
         responsive: true,
         onClick: (e) => {
           

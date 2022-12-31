@@ -4,16 +4,33 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
 
 
-    <table class="table table-sm table-striped" id="table">
+    <table class="table table-sm table-striped myfont" id="table">
     
     </table>
+    <style>
+        .myfont{
+            font-size: 12;
+        }
+    </style>
+
+<button onclick="gob()" id="btn" hidden>Back</button>
 
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 <script>
+
+    //****
+    const queryString = window.location.search;
+    console.log(queryString);
+    const urlParams = new URLSearchParams(queryString);
+    const month = urlParams.get('month')
+    //console.log('you picked ' + pickdate);
+    //****
+
     var date = new Date('2022', '10', '02', 0, 0, 0)
-    fetch("/trxapi", {
+    
+    fetch("/monthtrxonclick_api", {
 			method: "POST",
-			body: JSON.stringify({ shopid: '39', date: date })
+			body: JSON.stringify({ shopid: '39', month: month })
 			})
             .then((response) => response.json())
         	.then((gResponse) => {
@@ -39,8 +56,14 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
                     alert(rowdata[2])
                     
                 });
+
+                document.getElementById('btn').removeAttribute('hidden')
                 
             });
+
+            function gob(){
+                location.href = '/dashchart'
+            }
             
 
     function convertObject(dataObject) {
@@ -71,4 +94,6 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
         
         return obj
     };
+    
 </script>
+
