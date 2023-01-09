@@ -1,6 +1,7 @@
 ---
 
 import { getPriceData } from './scrapeprices';
+import { getTotSaldoForDate } from '../js/functions'
 import { srv_getCoinList, srv_getCoinPrices, srv_getTotSaldo, srv_getUserBizId, srv_getCoinCount, srv_getUserFrontInfo } from './srv_func';
 
 //**
@@ -14,6 +15,29 @@ coinList = await srv_getCoinCount('39')
 //getPriceData();
 //glList = await getPriceData();
 //console.log(glList)
+
+//*****************************
+//GET TODAY SALE FOR FRONT CARD
+//*****************************
+var stdate = new Date()
+var yr = stdate.getFullYear()
+var mo = stdate.getMonth()+1
+var da = stdate.getDate()
+var odate = new Date(yr, mo-1, da)
+
+let todaySale = 0.0
+var todayInfo = await getTotSaldoForDate('39', odate)
+//console.log(todayInfo)
+todayInfo?.map( (obj) => todaySale += parseFloat(obj.amount) )
+
+var todprov = todaySale * 0.004;
+var todavail = todaySale - todprov;
+var stTodaySale = todaySale.toFixed(2)
+var stTodayProv = todprov.toFixed(2)
+var stTodayAvail = todavail.toFixed(2)
+//*****************************
+//GET TODAY SALE FOR FRONT CARD
+//*****************************
 
 const data = await response.json();
 let month_saldo = data.data.saldo;
@@ -64,6 +88,8 @@ var dtot = parseFloat(fsaldo)
 var dmtot = parseFloat(month_saldo)
 var dperc = dmtot/dtot*100
 var sperc = dperc.toFixed(2)
+
+if(sperc == null || Number.isNaN(parseFloat(sperc)) )sperc = '0';
 
 let uinfo = [];
 if(uid){
@@ -142,35 +168,29 @@ if(uid){
           </svg>
           <input type="text" role="search" placeholder="Search..." class="py-2 pl-10 pr-4 w-full border-4 border-transparent placeholder-gray-400 focus:bg-gray-50 rounded-lg" />
         </div>
+
         <div class="flex flex-shrink-0 items-center ml-auto">
           <button class="inline-flex items-center p-2 hover:bg-gray-100 focus:bg-gray-100 rounded-lg">
             <span class="sr-only">User Menu</span>
-            <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
-              <span class="font-semibold">Grace Simmons</span>
-              <span class="text-sm text-gray-600">Lecturer</span>
-            </div>
+            <a href="/userinfopg">
+              <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
+                <span class="font-semibold">{uinfo[1]}</span>
+                <span class="text-sm text-gray-600">{uinfo[7]}</span>
+              </div>
+            </a>
             <span class="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100 rounded-full overflow-hidden">
               <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="user profile photo" class="h-full w-full object-cover">
             </span>
-            <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" class="hidden sm:block h-6 w-6 text-gray-300">
-              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg> 
           </button>
           <div class="border-l pl-3 ml-3 space-x-1">
-            <button class="relative p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:bg-gray-100 focus:text-gray-600 rounded-full">
-              <span class="sr-only">Notifications</span>
-              <span class="absolute top-0 right-0 h-2 w-2 mt-1 mr-2 bg-red-500 rounded-full"></span>
-              <span class="absolute top-0 right-0 h-2 w-2 mt-1 mr-2 bg-red-500 rounded-full animate-ping"></span>
-              <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-            </button>
+
             <button class="relative p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:bg-gray-100 focus:text-gray-600 rounded-full">
               <span class="sr-only">Log out</span>
               <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
   </svg>
             </button>
+
           </div>
         </div>
       </header>
@@ -199,6 +219,34 @@ if(uid){
         </div>
         <!-- START CARDS -->
         <section class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+          <a href="/cal">
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+              </svg>
+            </div>
+            <div>
+              <span class="inline-block text-2xl font-bold">Today sale</span>
+              <span class="inline-block text-xl text-gray-500 font-semibold"> {stTodaySale} sek</span>
+              <span class="block text-gray-500"></span>
+              <div> 
+                <span class="inline-block text-2xl font-bold">provision</span>
+                <span class="inline-block text-xl text-gray-500 font-semibold">-{ stTodayProv} sek</span>
+              </div>
+              <div> 
+                <span class="inline-block text-2xl font-bold">Withdraw</span>
+                <span class="inline-block text-xl text-gray-500 font-semibold">0 sek</span>
+              </div>
+              <div> 
+                <span class="inline-block text-2xl font-bold">Available</span>
+                <span class="inline-block text-xl text-gray-500 font-semibold">{stTodayAvail} sek</span>
+              </div>
+            </div>
+          </div>
+        </a>
+          
           <div class="flex items-center p-8 bg-white shadow rounded-lg">
             <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
               <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -208,19 +256,15 @@ if(uid){
             <div>
                 <span class="block text-gray-500">This month sale</span>
                 <span class="block text-2xl font-bold">{month_saldo} sek</span>
-            </div>
-          </div>
-          <div class="flex items-center p-8 bg-white shadow rounded-lg">
-            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
-              <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-            </div>
-            <div>
+                <div style="height=60px"></div>
                 <span class="block text-gray-500">Transactions this month</span>
-                 <span class="block text-2xl font-bold">{qty_trx}</span>
+                <span class="block text-2xl font-bold">{qty_trx}</span>
             </div>
+            
           </div>
+
+          
+
           <div class="flex items-center p-8 bg-white shadow rounded-lg">
             <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
               <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -240,7 +284,7 @@ if(uid){
                 <span class="inline-block text-xl text-gray-500 font-semibold">0 sek</span>
               </div>
               <div> 
-                <span class="inline-block text-2xl font-bold">Availble</span>
+                <span class="inline-block text-2xl font-bold">Available</span>
                 <span class="inline-block text-xl text-gray-500 font-semibold">{avail} sek</span>
               </div>
             </div>

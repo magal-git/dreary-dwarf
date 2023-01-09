@@ -15,15 +15,15 @@ function trxYear(){
 
 async function getTrxForDate(shopid, date){
     var d = new Date(date)
-    alert(d)
+    //alert(d)
     var day = d.getDate()
     var pday = parseInt(day)+1
     var month = d.getMonth()+1
     var dyear = d.getFullYear()
     var sd = dyear+'-'+month+'-'+day
     var sdp = dyear+'-'+month+'-'+pday
-    alert(sd)
-    alert(sdp)
+    //alert(sd)
+    //alert(sdp)
     // const odate = new Date(date)
     // const addOne = plusOneDay(date)
     // const oaddOne = new Date(addOne)
@@ -36,10 +36,14 @@ async function getTrxForDate(shopid, date){
     .gte('created_at', sd)
     .lt('created_at', sdp)
    
+    var saldo = 0;
+    data.map( (nr) => saldo += parseFloat(nr.amount) )
+    const obj_data = {saldo: saldo, count: data.length, total: data}
    //alert(data[0].id)
    //alert(data.length)
    
-   return data;
+   //return data;
+   return obj_data;
 }
 
 export async function post({ request }) {

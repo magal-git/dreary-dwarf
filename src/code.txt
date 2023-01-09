@@ -1,0 +1,7 @@
+change evo-calendar.css
+
+line 221 (15)
+line 222 (60)
+line 223 (60)
+line 130 padding: 7px 30px
+line 132 (16)

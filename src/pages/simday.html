@@ -13,24 +13,23 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
         }
     </style>
 
-<button onclick="gob()" id="btn" hidden>Back</button>
 
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 <script>
 
     //****
     const queryString = window.location.search;
-    console.log(queryString);
+    //console.log(queryString);
     const urlParams = new URLSearchParams(queryString);
-    const month = urlParams.get('month')
-    //console.log('you picked ' + pickdate);
+    const sdate = urlParams.get('sdate')
+    //console.log('you picked ' + sdate);
     //****
 
     var date = new Date('2022', '10', '02', 0, 0, 0)//TEST
     
-    fetch("/monthtrxonclick_api", {
+    fetch("/daytrxonclick_api", {
 			method: "POST",
-			body: JSON.stringify({ shopid: '39', month: month })
+			body: JSON.stringify({ shopid: '39', sdate: sdate })
 			})
             .then((response) => response.json())
         	.then((gResponse) => {
@@ -57,7 +56,7 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
                     
                 });
 
-                document.getElementById('btn').removeAttribute('hidden')
+                //document.getElementById('btn').removeAttribute('hidden')
                 
             });
 

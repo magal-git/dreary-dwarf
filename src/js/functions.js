@@ -27,12 +27,14 @@ async function getTotSaldoForDate(shopid, date){
     //alert(addOne)
     const oaddOne = new Date(addOne)
     //alert(oaddOne)
-    //const stDate = odate.toISOString()
-    //alert(stDate)
-    //const stAddone = oaddOne.toISOString()
-    //alert(stAddone)
+    // const stDate = odate.toISOString()
+    // console.log('1 ' + stDate)
+    // const stAddone = oaddOne.toISOString()
+    // console.log('2 ' + stAddone)
 
-    const year = trxYear();
+    //const year = trxYear();
+    const year = date.getFullYear()
+    //console.log('year ' + year)
     const stTbl = 'transactions' + year;
     const { data } = await supabase.from(stTbl).select()
     .eq('shop_id', shopid)

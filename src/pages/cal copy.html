@@ -1,0 +1,78 @@
+<!-- Core Stylesheet -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+<!-- Optional Themes -->
+
+<link rel="stylesheet" href="/src/pages/evo-calendar/css/evo-calendar.css" />
+<link rel="stylesheet" href="/src/pages/evo-calendar/css/evo-calendar.midnight-blue.css" />
+<link rel="stylesheet" href="/src/pages/evo-calendar/css/evo-calendar.orange-coral.css" />
+<link rel="stylesheet" href="/src/pages/evo-calendar/css/evo-calendar.royal-navy.css" />
+<script type="module" charset="utf8" src="/src/js/functions.js"></script>
+
+<!-- JavaScript -->
+<script src="/src/pages/jquery.min.js"></script>
+<script src="/src/pages/evo-calendar/js/evo-calendar.js"></script>
+
+<script type="module" charset="utf8" src="/src/js/cal.js"></script>
+
+		<title>Title</title>
+<!-- And -->
+	<style>
+		#tblframe{
+			height: 500px;
+			width: 900px;
+			display: block;
+    		margin-left: auto;
+    		margin-right: auto
+		}
+		#evoCalendar{
+			width: 800px;
+			display: block;
+    		margin-left: auto;
+    		margin-right: auto
+		}
+		
+	</style>
+
+	</head>
+	<body>
+		<button onclick="gob()" id="btn">Back</button>
+		<div style="height:20px"></div>
+        <!-- <div id="ct" style="width:1255px; display: flex"> -->
+        <div id="ct" style="display: flex">
+		    <div id="evoCalendar"></div>
+		    <div style="width: 20px"></div>
+			<ul>
+				<div style="width:280px" id="date"></div>
+				<div style="width:180px" id="sale"></div>
+				<div style="width:180px" id="prov"></div>
+				<div style="width:180px" id="avail"></div>
+				<!-- <a href="/simday?sdate=2023-01-03" target="sf">Trx</a> -->
+			</ul>
+        </div>
+		<script>
+        let today = new Date()
+		let y = today.getFullYear()
+		let m = today.getMonth()+1
+		let d = today.getDate()
+		let stt = y.toString() + '-' + m.toString() + '-' + + d.toString()
+		//alert(stt)
+		let tsrc = "http://localhost:3000/simday?sdate=" + stt;
+        document.write('<iframe name="sf" id="tblframe" src=' + tsrc + '></iframe>')
+
+
+		function gob(){
+                location.href = '/dash'
+            }
+		</script>
+		<!-- <iframe name="sf" id="mch" src="http://localhost:3000/simday?sdate="></iframe> -->
+		
+	</body>
+</html>
