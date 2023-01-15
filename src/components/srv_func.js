@@ -1,5 +1,8 @@
 
 import { supabase } from '../js/supabase_client';
+import { RealtimeClient } from '@supabase/realtime-js'
+
+
 
 
 function srv_trxYear(){
@@ -140,5 +143,27 @@ async function srv_getCoinPrices(){
 }
 //***
 
+function realt(){
+    // console.log('howdy')
+    // const res = supabase.channel('postgres_changes')
+    // .on('INSERT', (e) => console.log(e) )
+    // .subscribe()
 
- export { srv_getTotSaldo, srv_getUserBizId, srv_trxYear, srv_getCoinList, srv_getCoinPrices, srv_getCoinCount, srv_getUserFrontInfo }
+    // console.log('in realt')
+    // supabase
+    // .from('*')
+    // .on('*', (payload) => {
+    //     console.log(payload)
+    // })
+
+    var client = new RealtimeClient('ws://pdqbveeydttlvoumfxpm.supabase.co/realtime/v1')
+    client.connect()
+
+    var databaseChanges = client.channel('realtime')
+    databaseChanges.on('INSERT', (e) => console.log(e))
+}
+
+
+
+
+ export { srv_getTotSaldo, srv_getUserBizId, srv_trxYear, srv_getCoinList, srv_getCoinPrices, srv_getCoinCount, srv_getUserFrontInfo, realt }

@@ -2,7 +2,8 @@
 
 import { getPriceData } from './scrapeprices';
 import { getTotSaldoForDate } from '../js/functions'
-import { srv_getCoinList, srv_getCoinPrices, srv_getTotSaldo, srv_getUserBizId, srv_getCoinCount, srv_getUserFrontInfo } from './srv_func';
+import { srv_getCoinList, srv_getCoinPrices, srv_getTotSaldo, srv_getUserBizId, srv_getCoinCount, srv_getUserFrontInfo, realt } from './srv_func';
+import { supabase } from '../js/supabase_client';
 
 //**
 //{glList?.map( (obj) =>  <li>{obj.name} - {obj.price}</li>)}
@@ -97,6 +98,10 @@ if(uid){
 }
 
 //console.log(uinfo)
+//**SUPABASE REALTIME
+realt()
+
+
 ---
 <style>
   #mch{

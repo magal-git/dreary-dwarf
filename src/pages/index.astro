@@ -8,10 +8,26 @@ import Layout from '../layouts/Layout.astro';
 	<button class="alert">Click me!</button>
 
 <script>
+import { supabase } from "../js/supabase_client";
+
   const button = document.querySelector('button.alert') ?? document.createElement('button');
     button.addEventListener('click', () => {
 		window.location.href = "http://localhost:3000/login";
     });
+
+console.log('habba')
+
+const channel = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
 </script>
 		
 	</main>
