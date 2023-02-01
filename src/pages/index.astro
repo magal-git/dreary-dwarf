@@ -15,19 +15,18 @@ import { supabase } from "../js/supabase_client";
 		window.location.href = "http://localhost:3000/login";
     });
 
-console.log('habba')
 
-const channel = supabase
-  .channel('schema-db-changes')
-  .on(
-    'postgres_changes',
-    {
-      event: '*',
-      schema: 'public',
-    },
-    (payload) => console.log(payload)
-  )
-  .subscribe()
+// const channel = supabase
+//   .channel('schema-db-changes')
+//   .on(
+//     'postgres_changes',
+//     {
+//       event: '*',
+//       schema: 'public',
+//     },
+//     (payload) => console.log(payload)
+//   )
+//   .subscribe()
 </script>
 		
 	</main>

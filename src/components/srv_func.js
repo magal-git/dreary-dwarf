@@ -1,8 +1,5 @@
 
 import { supabase } from '../js/supabase_client';
-import { RealtimeClient } from '@supabase/realtime-js'
-
-
 
 
 function srv_trxYear(){
@@ -23,8 +20,10 @@ async function srv_getCoinCount(shopid){
         .eq('currency', 'sek')
         .eq('coin_type', coins[i])
 
-        finArr.push(new CoinModel(coins[i], data.length))
-        finArr.sort( (a,b) => b.amount - a.amount )
+        if(data != null){
+            finArr.push(new CoinModel(coins[i], data.length))
+            finArr.sort( (a,b) => b.amount - a.amount )
+        }
     }
 
     //console.log(finArr)
@@ -143,27 +142,64 @@ async function srv_getCoinPrices(){
 }
 //***
 
-function realt(){
-    // console.log('howdy')
-    // const res = supabase.channel('postgres_changes')
-    // .on('INSERT', (e) => console.log(e) )
-    // .subscribe()
+//**************************************************************************
+//************************* BIZ_REQ_WITHDRAW *******************************
+//*********************************V****************************************
 
-    // console.log('in realt')
-    // supabase
-    // .from('*')
-    // .on('*', (payload) => {
-    //     console.log(payload)
-    // })
+//cpay celo pub //0x25fefaec5e50e3c9aec240b08036afe09a40ab0c
+//cpay celo priv //0x11196af0ee5c4f1cee6749f016ce3bc64a3d6cc14c998e870b065b7824d0adf7
 
-    var client = new RealtimeClient('ws://pdqbveeydttlvoumfxpm.supabase.co/realtime/v1')
-    client.connect()
+const chan = supabase
+.channel('schema-db-changes')
+.on(
+  'postgres_changes',
+  {
+    event: 'INSERT',
+    schema: 'public',
+    table: 'biz_req_withdraw',
+  },
+  //(payload) => console.log(payload)
+  (payload) => {
+    console.log(payload)
+    var amou = payload.new['amount']
+    var shid = payload.new['shop_id']
+    var waddr = payload.new['wallet_addr']
 
-    var databaseChanges = client.channel('realtime')
-    databaseChanges.on('INSERT', (e) => console.log(e))
-}
+    
+    const send_url = "https://api-eu1.tatum.io/v3/celo/transaction";
+
+    var headers = {
+        'x-api-key': 'e0734a47-73c1-4e2f-86e4-0a54822a48e4',
+        'Content-Type': 'application/json'
+    };
+    var query = 
+        {
+        "to": waddr,
+        "currency": "CELO",
+        "feeCurrency": "CELO",
+        "amount": amou,
+        "fromPrivateKey": '0x11196af0ee5c4f1cee6749f016ce3bc64a3d6cc14c998e870b065b7824d0adf7'
+        }
+
+
+    fetch(send_url, {
+    method: "POST",
+    body: JSON.stringify(query),
+    headers: headers
+    })
+    .then(response => response.json()) 
+    .then(json => console.log(json));
+    
+  }
+)
+.subscribe()
+
+//**************************************************************************
+//************************* END BIZ_REQ_WITHDRAW ***************************
+//**************************************************************************
 
 
 
 
- export { srv_getTotSaldo, srv_getUserBizId, srv_trxYear, srv_getCoinList, srv_getCoinPrices, srv_getCoinCount, srv_getUserFrontInfo, realt }
+
+export { srv_getTotSaldo, srv_getUserBizId, srv_trxYear, srv_getCoinList, srv_getCoinPrices, srv_getCoinCount, srv_getUserFrontInfo, /*realt*/ }
