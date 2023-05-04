@@ -1,10 +1,10 @@
 ---
 
-import { getPriceData } from './scrapeprices';
 import { getTotSaldoForDate } from '../js/functions'
 import { srv_getCoinList, srv_getCoinPrices, srv_getTotSaldo, srv_getUserBizId, srv_getCoinCount, srv_getUserFrontInfo, /*realt*/ } from './srv_func';
 import { supabase } from '../js/supabase_client';
-import {what} from './srv_realtime.js';
+import {what} from './srv_realtime_swap.js';
+import {wdraw} from './srv_realtime_withdraw.js';
 
 //**
 //{glList?.map( (obj) =>  <li>{obj.name} - {obj.price}</li>)}
@@ -69,7 +69,7 @@ if(uid > 0){
     totam?.map( (nr) => saldo += parseFloat(nr.amount) )
     
     findcoin = srv_getCoinList(totam)//SORT BY COIN
-    prov = saldo * 0.004;//*(0.004)MAKE GLOBAL
+    prov = saldo * 0.005;//*(0.005)MAKE GLOBAL
     avail = saldo-prov;
     avail = parseFloat(avail.toFixed(2));
     prov = parseFloat(prov.toFixed(2));
@@ -101,8 +101,8 @@ if(uid){
 //console.log(uinfo)
 //**SUPABASE REALTIME
 //realt()
-what()
-
+//what()
+//wdraw()
 
 ---
 <style>

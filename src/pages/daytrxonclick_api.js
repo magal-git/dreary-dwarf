@@ -4,7 +4,7 @@ import { supabase } from '../js/supabase_client'
 
 
 async function getTotSaldoForDate(shopid, date){
-  //console.log(date)
+  console.log(date)
   const odate = new Date(date)
   const addOne = addOneDay(date)
   const oaddOne = new Date(addOne)
